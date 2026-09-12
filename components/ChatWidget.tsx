@@ -1,12 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Sparkles, Loader2 } from 'lucide-react';
-import { sendMessageToGemini } from '../services/geminiService';
+import { GEMINI_UNAVAILABLE_MESSAGE, isGeminiConfigured, sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: "Hi! I'm an AI assistant. Ask me anything about Alex's experience or skills!", timestamp: new Date() }
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [
+    {
+      role: 'model',
+      text: isGeminiConfigured
+        ? "Hi! I'm an AI assistant. Ask me anything about Alex's experience or skills!"
+        : GEMINI_UNAVAILABLE_MESSAGE,
+      timestamp: new Date()
+    }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +30,7 @@ const ChatWidget: React.FC = () => {
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
+    if (!isGeminiConfigured || !inputValue.trim() || isLoading) return;
 
     const userMsg: ChatMessage = {
       role: 'user',
@@ -111,12 +117,13 @@ const ChatWidget: React.FC = () => {
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Ask about my skills..."
+                placeholder={isGeminiConfigured ? "Ask about my skills..." : "Gemini API key required to enable chat"}
+                disabled={!isGeminiConfigured}
                 className="flex-1 bg-slate-900 border border-slate-700 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors"
               />
               <button
                 type="submit"
-                disabled={isLoading || !inputValue.trim()}
+                disabled={!isGeminiConfigured || isLoading || !inputValue.trim()}
                 className="bg-primary hover:bg-primary/90 text-white p-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-5 h-5" />

@@ -1,10 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 import { PORTFOLIO_DATA } from "../constants";
 
-// Initialize Gemini Client
-// Note: process.env.API_KEY is assumed to be available.
-const apiKey = process.env.API_KEY || ''; 
-const ai = new GoogleGenAI({ apiKey });
+const apiKey =
+  import.meta.env.VITE_GEMINI_API_KEY ||
+  process.env.GEMINI_API_KEY ||
+  process.env.API_KEY ||
+  '';
+
+export const isGeminiConfigured = Boolean(apiKey);
+export const GEMINI_UNAVAILABLE_MESSAGE =
+  "AI assistant is currently unavailable because the Gemini API key is not configured.";
 
 const MODEL_NAME = 'gemini-3-flash-preview';
 
@@ -33,11 +38,12 @@ export const sendMessageToGemini = async (
   message: string,
   history: { role: 'user' | 'model'; text: string }[]
 ): Promise<string> => {
-  if (!apiKey) {
-    return "Error: API Key is missing. Please configure the environment.";
+  if (!isGeminiConfigured) {
+    return GEMINI_UNAVAILABLE_MESSAGE;
   }
 
   try {
+    const ai = new GoogleGenAI({ apiKey });
     // We construct a fresh chat session for each request in this simple implementation,
     // or we could maintain a chat object if we wanted to use the stateful API.
     // For simplicity and to ensure context is always fresh, we'll use generateContent with the history simulated or just single-turn for now if we want to be stateless,
