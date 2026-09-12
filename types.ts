@@ -27,6 +27,12 @@ export interface SocialLink {
   icon: string; // Icon name
 }
 
+export interface Certification {
+  name: string;
+  issuer: string;
+  date: string;
+}
+
 export interface PortfolioData {
   name: string;
   title: string;
@@ -36,6 +42,7 @@ export interface PortfolioData {
   socials: SocialLink[];
   skills: Skill[];
   experience: Experience[];
+  certifications: Certification[];
   projects: Project[];
 }
 

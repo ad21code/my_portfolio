@@ -44,6 +44,7 @@ const App: React.FC = () => {
             <NavLink href="#about" label="About" />
             <NavLink href="#skills" label="Skills" />
             <NavLink href="#experience" label="Experience" />
+            <NavLink href="#certifications" label="Certifications" />
             <NavLink href="#projects" label="Projects" />
             <NavLink href="#contact" label="Contact" />
           </div>
@@ -62,6 +63,7 @@ const App: React.FC = () => {
             <NavLink href="#about" label="About" />
             <NavLink href="#skills" label="Skills" />
             <NavLink href="#experience" label="Experience" />
+            <NavLink href="#certifications" label="Certifications" />
             <NavLink href="#projects" label="Projects" />
             <NavLink href="#contact" label="Contact" />
           </div>
@@ -204,6 +206,23 @@ const App: React.FC = () => {
                     {job.description}
                   </p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section className="py-24 bg-dark/50" id="certifications">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center">Certifications</h2>
+
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+            {PORTFOLIO_DATA.certifications.map((certification, index) => (
+              <div key={`${certification.name}-${index}`} className="bg-card p-6 rounded-2xl border border-slate-800 shadow-sm hover:border-primary/50 transition-colors">
+                <h3 className="text-lg font-bold text-white mb-2">{certification.name}</h3>
+                <p className="text-slate-400 font-medium mb-2">{certification.issuer}</p>
+                <p className="text-primary text-sm font-medium">{certification.date}</p>
               </div>
             ))}
           </div>
