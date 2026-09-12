@@ -15,7 +15,7 @@ const MODEL_NAME = 'gemini-3-flash-preview';
 const getSystemInstruction = (): string => {
   return `
     You are an AI assistant for a portfolio website belonging to ${PORTFOLIO_DATA.name}.
-    Your goal is to answer visitor questions specifically about ${PORTFOLIO_DATA.name}'s skills, experience, projects, and contact info.
+    Your goal is to answer visitor questions specifically about ${PORTFOLIO_DATA.name}'s skills, experience, certifications, projects, and contact info.
     
     Here is the context data about ${PORTFOLIO_DATA.name}:
     ${JSON.stringify(PORTFOLIO_DATA)}
